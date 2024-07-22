@@ -1,58 +1,33 @@
-const express = require('express')
+const express = require('express');
 const routerProduct = express.Router();
-//const { getProducts, getProductById, addProduct, updateProduct, deleteProduct } = require('../controller/productController.js') 
-const ProductController = require('../controller/productController')
-const productController = new ProductController()
+const ProductController = require('../controller/product.controller.js');
+const Product = new ProductController();
 
-routerProduct.get('/', productController.getProducts)
-routerProduct.get('/:pid', productController.getProductById)
-routerProduct.post('/', productController.addProduct)
-routerProduct.put('/:pid', productController.updateProduct)
-routerProduct.delete('/:pid', productController.deleteProduct)
+routerProduct.get('/', async(req, res) => {
+    const foundProducts = await Product.getProducts();
 
-module.exports = { routerProduct }
-
-/* routerProduct.get('/', async(req, res) => {
-    const limit = req.query.limit
-    const page = req.query.page
-    const sort = req.query.sort
-    const category = req.query.query
-
-    let returnPaginate = await productManager.getProducts(limit, page, category, sort)
-
-    if(returnPaginate != false){
-        res.status(200).send(returnPaginate)
-    }else{
-        res.status(400).send("Error al obtener productos")
-    }
+    foundProducts ? res.status(200).json(foundProducts) : res.status(400).json('Error el devolver los productos');
 })
 
 routerProduct.get('/:pid', async(req, res) => {
-    const prodId = req.params.pid
-    const product = await productManager.getProductById(prodId)
+    const productId = req.params.pid;
+    const foundProduct = await Product.getProductById(productId);
 
-    product ? res.status(200).json(product) : res.status(400).send("Producto no encontrado")
+    foundProduct ? res.status(200).json(foundProduct) : res.status(400).json('Error al devolver el producto');
 })
 
 routerProduct.post('/', async(req, res) => {
-    const newProduct = req.body
-    const returnAddProd = await productManager.addProduct(newProduct)
+    const product = req.body;
+    const addProd = await Product.addProduct(product);    
+    addProd ? res.status(200).json('Producto agregado con éxito') : res.status(400).json('Error al agregar el producto');
 
-    returnAddProd ? res.status(200).send("Producto agregado") : res.status(400).send("Error al agregar el producto")
-})
-
-routerProduct.put('/:pid', async(req, res) => {
-    const prodId = req.params.pid
-    const updatedProd = req.body
-
-    const returnUpdate = await productManager.updateProduct(prodId, updatedProd)
-
-    returnUpdate ? res.status(200).send("Producto actualizado") : res.status(400).send("Error al actualizar el producto") 
 })
 
 routerProduct.delete('/:pid', async(req, res) => {
-    const idProd = req.params.pid
-    const returnDelete = await productManager.deleteProduct(idProd)
+    const productId = req.params.pid;
+    const deleteProd = await Product.deleteProductById(productId);
+    
+    foundProduct ? res.status(200).json('Producto eliminado con éxito') : res.status(400).json('Error al eliminar el producto');
 
-    returnDelete ? res.status(200).send("Producto eliminado") : res.status(400).send("Error al eliminar el productos")
-}) */
+})
+module.exports = routerProduct
