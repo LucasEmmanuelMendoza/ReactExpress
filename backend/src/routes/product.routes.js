@@ -12,7 +12,6 @@ routerProduct.get('/', async(req, res) => {
 routerProduct.get('/:pid', async(req, res) => {
     const productId = req.params.pid;
     const foundProduct = await Product.getProductById(productId);
-
     foundProduct ? res.status(200).json(foundProduct) : res.status(400).json('Error al devolver el producto');
 })
 
@@ -26,8 +25,14 @@ routerProduct.post('/', async(req, res) => {
 routerProduct.delete('/:pid', async(req, res) => {
     const productId = req.params.pid;
     const deleteProd = await Product.deleteProductById(productId);
-    
-    foundProduct ? res.status(200).json('Producto eliminado con éxito') : res.status(400).json('Error al eliminar el producto');
-
+    deleteProd ? res.status(200).json('Producto eliminado con éxito') : res.status(400).json('Error al eliminar el producto');
 })
+
+routerProduct.post('/:pid', async(req, res) => {
+    const productId = req.params.pid;
+    const updatedProd = req.body;
+    const updateProd = await Product.updateProduct(productId, updatedProd);
+    updateProd ? res.status(200).json('Producto actualizado con éxito') : res.status(400).json('Error al actualizar el producto');
+})
+
 module.exports = routerProduct

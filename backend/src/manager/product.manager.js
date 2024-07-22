@@ -22,7 +22,6 @@ class ProductManager{
     async addProduct(value){
         try{
             const retorno = await ProductModel.create(value)
-            console.log('retorno manager:', retorno)
             return retorno
         }catch(error){
             console.log('ERROR:', error)

@@ -40,7 +40,20 @@ class ProductController{
 
     async deleteProductById(id){
         try{
+            const retornoDelete = await productManager.deleteProduct(id)
+            if(retornoDelete){
+                return true;
+            }
+        }catch(error){
+            console.log('ERROR:', error)
+            return error;
+        }
+    }
 
+    async updateProduct(id, value){
+        try{
+            const retornoUpdate = await productManager.updateProduct(id, value)
+            console.log('retornoUpdate:', retornoUpdate)
         }catch(error){
             console.log('ERROR:', error)
             return error;
