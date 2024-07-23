@@ -43,13 +43,14 @@ class ProductController{
     async addProduct(req, res){
         const { value } = req.body;
         try{
-            const retornoAdd = await productManager.addProduct(value);
-            if(retornoAdd){
-                return true
-            }
+            await productManager.addProduct(value);
+            return res.status(200).json('Producto creado');
         }catch(error){
-            console.log('ERROR:', error)
-            return error;
+            console.log('Error ProductController - addProduct:', error);
+            if(error.message = 'Error creating product'){
+                return res.status(404).json({error: 'Error creating product'});
+            }
+            return res.status(500).json({error: 'Internal Server Error'});
         }
     }
 

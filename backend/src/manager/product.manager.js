@@ -6,7 +6,7 @@ class ProductManager{
             return await ProductModel.find()
         }catch(error){
             console.log('ERROR:', error)
-            return error;
+            throw error;
         }
     }
 
@@ -19,16 +19,19 @@ class ProductManager{
             return result;
         }catch(error){
             console.log('ERROR:', error)
-            return error;
+            throw error;
         }
     }
 
     async addProduct(value){
         try{
-            return await ProductModel.create(value)
+            const result = await ProductModel.create(value)
+            if(!result){
+                throw new Error('Error creating product');
+            }
         }catch(error){
             console.log('ERROR:', error)
-            return error;        
+            throw error;        
         }
     }
     
@@ -40,7 +43,7 @@ class ProductManager{
             }
         }catch(error){
             console.log('ERROR:', error)
-            return error;
+            throw error;
         }
     }
 
@@ -52,7 +55,7 @@ class ProductManager{
             }
         }catch(error){
             console.log('ERROR:', error)
-            return error;
+            throw error;
         }
     }
 }
