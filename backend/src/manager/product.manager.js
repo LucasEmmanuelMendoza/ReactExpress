@@ -10,9 +10,13 @@ class ProductManager{
         }
     }
 
-    async getProductById(id){
+    async getProduct(id){
         try{
-            return await ProductModel.findById({_id: id})
+            const result = await ProductModel.findById({_id: id})
+            if(!result){
+                throw new Error('Product not found');
+            }
+            return result;
         }catch(error){
             console.log('ERROR:', error)
             return error;
@@ -21,8 +25,7 @@ class ProductManager{
 
     async addProduct(value){
         try{
-            const retorno = await ProductModel.create(value)
-            return retorno
+            return await ProductModel.create(value)
         }catch(error){
             console.log('ERROR:', error)
             return error;        
@@ -31,7 +34,10 @@ class ProductManager{
     
     async deleteProduct(id){
         try{
-            return await ProductModel.findByIdAndDelete({_id: id})
+            const result = await ProductModel.findByIdAndDelete({_id: id})
+            if(!result){
+                throw new Error('Product not found');
+            }
         }catch(error){
             console.log('ERROR:', error)
             return error;
@@ -40,7 +46,10 @@ class ProductManager{
 
     async updateProduct(id, value){
         try{
-            return await ProductModel.findByIdAndUpdate(id, {$set: value})
+            const result = await ProductModel.findByIdAndUpdate(id, {$set: value})
+            if(!result){
+                throw new Error('Product not found');
+            }
         }catch(error){
             console.log('ERROR:', error)
             return error;

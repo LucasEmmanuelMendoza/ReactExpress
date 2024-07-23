@@ -2,31 +2,46 @@ const ProductManager = require("../manager/product.manager")
 const productManager = new ProductManager()
 
 class ProductController{
-    async getProducts(){
+    async getProducts(req, res){
         try{
-            const products = await productManager.getProducts()
-            if(products != null){
-                return products
-            }
+            const products = await productManager.getProducts();
+            return res.status(200).json(products);
         }catch(error){
-            console.log('ERROR:', error)
-            return error;
+            console.log('Error ProductController - getProducts:', error);
+            return res.status(500).json({error: 'Internal Server Error'});
         }
     }
 
-    async getProductById(id){
+    async deleteProductById(req, res){
+        const { id } = req.params;
         try{
-            const product = await productManager.getProductById(id)
-            if(product != null){
-                return product
-            }
+            await productManager.deleteProduct(id);
+            return res.status(200).json({message: 'Product deleted'});
         }catch(error){
-            console.log('ERROR:', error)
-            return error;
+            console.log('Error ProductController - deleteProductById:', error);
+            if(error.message = 'Product not found'){
+                return res.status(404).json({error: 'Product not found'});
+            }
+            return res.status(500).json({error: 'Internal Server Error'});
         }
     }
 
-    async addProduct(value){
+    async getProductById(req, res){
+        const { id } = req.params;
+        try{
+            const product = await productManager.getProduct(id)
+            return res.status(200).json(product);
+        }catch(error){
+            console.log('Error ProductController - getProductById:', error);
+            if(error.message = 'Product not found'){
+                return res.status(404).json({error: 'Product not found'});
+            }
+            return res.status(500).json({error: 'Internal Server Error'});
+        }
+    }
+
+    async addProduct(req, res){
+        const { value } = req.body;
         try{
             const retornoAdd = await productManager.addProduct(value);
             if(retornoAdd){
@@ -38,25 +53,17 @@ class ProductController{
         }
     }
 
-    async deleteProductById(id){
+    async updateProduct(req, res){
+        const { id, value } = req.params
         try{
-            const retornoDelete = await productManager.deleteProduct(id)
-            if(retornoDelete){
-                return true;
+            await productManager.updateProduct(id, value)
+            res.status(200).json({message: 'Producto actualizado'});
+        }catch(error){
+            console.log('Error ProductController - updateProduct:', error);
+            if(error.message = 'Product not found'){
+                return res.status(404).json({error: 'Product not found'});
             }
-        }catch(error){
-            console.log('ERROR:', error)
-            return error;
-        }
-    }
-
-    async updateProduct(id, value){
-        try{
-            const retornoUpdate = await productManager.updateProduct(id, value)
-            console.log('retornoUpdate:', retornoUpdate)
-        }catch(error){
-            console.log('ERROR:', error)
-            return error;
+            return res.status(500).json({error: 'Internal Server Error'});
         }
     }
 }
