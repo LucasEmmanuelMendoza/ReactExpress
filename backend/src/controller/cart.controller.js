@@ -4,7 +4,7 @@ const cartManager = new CartManager();
 class CartController{
     async createCart(){
         try{
-            
+
         }catch(error){
 
         }
@@ -28,7 +28,7 @@ class CartController{
 
     async addToCart(productId, cartId){
         try{
-    
+            
         }catch(error){
 
         }

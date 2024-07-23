@@ -6,7 +6,7 @@ class CartManager{
             return returnCreate = await CartModel.create([])
         }catch(error){
             console.log(error);
-            return error;
+            throw error;
         }
     }
 
@@ -18,7 +18,7 @@ class CartManager{
             }
         }catch(error){
             console.log(error);
-            return error;
+            throw error;
         }
     }
 
@@ -30,7 +30,7 @@ class CartManager{
             }
         }catch(error){
             console.log(error);
-            return error;
+            throw error;
         }
     }
 
@@ -42,7 +42,7 @@ class CartManager{
             }
         }catch(error){
             console.log(error);
-            return error;
+            throw error;
         }
     }
 
@@ -61,11 +61,13 @@ class CartManager{
                     foundCart.products.push(newProd)
                 }
                 await Carts.updateOne({"_id": cartId}, foundCart)
-                return true
+                return {success: true}
+            }else{
+                return {success: false, message: 'Cart not found'};
             }
         }catch(error){
-            console.log(error)
-            return false
+            console.log('Error in CartManager .addProduct', error);
+            throw error
         }
     }
 
@@ -82,7 +84,7 @@ class CartManager{
             }
         }catch(error){
             console.log(error);
-            return error;
+            throw error;
         }
     }
 
@@ -95,7 +97,7 @@ class CartManager{
             }
         }catch(error){
             console.log(error);
-            return error;
+            throw error;
         }
     }
 }

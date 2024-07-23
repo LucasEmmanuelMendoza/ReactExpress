@@ -12,7 +12,7 @@ class ProductManager{
 
     async getProduct(id){
         try{
-            const result = await ProductModel.findById({_id: id})
+            const result = await ProductModel.findById(id)
             if(!result){
                 throw new Error('Product not found');
             }
@@ -25,21 +25,27 @@ class ProductManager{
 
     async addProduct(value){
         try{
-            const result = await ProductModel.create(value)
-            if(!result){
-                throw new Error('Error creating product');
+            const existe = await ProductModel.find({code: value.code});
+            if(existe){
+                return {success: false, message: 'Code must be unique'}
+            }else{
+                await ProductModel.create(value)
+                return {success: true, message: 'Product added'}
             }
         }catch(error){
-            console.log('ERROR:', error)
+            console.log('ERROR in ProductManager addProduct:', error)
             throw error;        
         }
     }
     
     async deleteProduct(id){
         try{
-            const result = await ProductModel.findByIdAndDelete({_id: id})
-            if(!result){
-                throw new Error('Product not found');
+            const existe = await ProductModel.findById(id)
+            if(!existe){
+                return {success: false, message:'Product not found'};
+            }else{
+                await ProductModel.findByIdAndDelete(id)
+                return {success: true};
             }
         }catch(error){
             console.log('ERROR:', error)

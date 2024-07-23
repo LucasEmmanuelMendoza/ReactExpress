@@ -12,20 +12,6 @@ class ProductController{
         }
     }
 
-    async deleteProductById(req, res){
-        const { id } = req.params;
-        try{
-            await productManager.deleteProduct(id);
-            return res.status(200).json({message: 'Product deleted'});
-        }catch(error){
-            console.log('Error ProductController - deleteProductById:', error);
-            if(error.message = 'Product not found'){
-                return res.status(404).json({error: 'Product not found'});
-            }
-            return res.status(500).json({error: 'Internal Server Error'});
-        }
-    }
-
     async getProductById(req, res){
         const { id } = req.params;
         try{
@@ -40,16 +26,35 @@ class ProductController{
         }
     }
 
+    async deleteProductById(req, res){
+        const { id } = req.params;
+        try{
+            const result = await productManager.deleteProduct(id);
+            if(result.success){
+                return res.status(200).json({message: 'Product deleted'});
+            }else{
+                return res.status(404).json({error: result.message});   
+            }
+        }catch(error){
+            console.log('Error ProductController - deleteProductById:', error);
+            if(error.message = 'Product not found'){
+                return res.status(404).json({error: 'Product not found'});
+            }
+            return res.status(500).json({error: 'Internal Server Error'});
+        }
+    }
+
     async addProduct(req, res){
         const { value } = req.body;
         try{
-            await productManager.addProduct(value);
-            return res.status(200).json('Producto creado');
+            const result = await productManager.addProduct(value);
+            if(result.success){
+                return res.status(200).json({message: 'Product successfully added'});
+            }else{
+                return res.status(404).json({error: result.message});
+            }
         }catch(error){
             console.log('Error ProductController - addProduct:', error);
-            if(error.message = 'Error creating product'){
-                return res.status(404).json({error: 'Error creating product'});
-            }
             return res.status(500).json({error: 'Internal Server Error'});
         }
     }
@@ -62,7 +67,7 @@ class ProductController{
         }catch(error){
             console.log('Error ProductController - updateProduct:', error);
             if(error.message = 'Product not found'){
-                return res.status(404).json({error: 'Product not found'});
+                return res.status(404).json({error: error.message});
             }
             return res.status(500).json({error: 'Internal Server Error'});
         }
