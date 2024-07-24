@@ -2,7 +2,7 @@ const ProductManager = require("../manager/product.manager")
 const productManager = new ProductManager()
 
 class ProductController{
-    async getProducts(req, res){
+    getProducts = async(req, res) => {
         try{
             const products = await productManager.getProducts();
             return res.status(200).json(products);
@@ -12,24 +12,24 @@ class ProductController{
         }
     }
 
-    async getProductById(req, res){
-        const { id } = req.params;
+    getProductById = async(req, res) => {
+        const { pid: id } = req.params;
         try{
             const product = await productManager.getProduct(id)
             return res.status(200).json(product);
         }catch(error){
             console.log('Error ProductController - getProductById:', error);
-            if(error.message = 'Product not found'){
-                return res.status(404).json({error: 'Product not found'});
+            if(error.message === 'Product not found'){
+                return res.status(404).json({error: error.message});
             }
             return res.status(500).json({error: 'Internal Server Error'});
         }
     }
 
-    async deleteProductById(req, res){
-        const { id } = req.params;
+    deleteProductById = async(req, res) => {
+        const { pid: id } = req.params;
         try{
-            await ProductManager.deleteProduct(id)
+            await productManager.deleteProduct(id)
             return res.status(200).json({message: 'Product Successfully Deleted'});
         }catch(error){
             console.log('Error ProductController - deleteProductById:', error);
@@ -40,22 +40,23 @@ class ProductController{
         }
     }
 
-    async addProduct(req, res){
+    addProduct = async(req, res) => {
         const { value } = req.body;
         try{
-            await ProductManager.addProduct(value);
+            await productManager.addProduct(value);
             return res.status(200).json({message: 'Product Successfully Added'});
         }catch(error){
             console.log('Error ProductController - addProduct:', error);
-            if(error.message === 'Code Must Be Unique'){
+            if(error.message === 'Error Creating A Product' || error.message === 'Code Must Be Unique'){
                 return res.status(404).json({error: error.message});
             }
             return res.status(500).json({error: 'Internal Server Error'});
         }
     }
 
-    async updateProduct(req, res){
-        const { id, value } = req.params
+    updateProduct = async(req, res)=>{
+        const { id } = req.params
+        const { value } = req.body;
         try{
             await productManager.updateProduct(id, value)
             res.status(200).json({message: 'Producto actualizado'});

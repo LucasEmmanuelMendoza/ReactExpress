@@ -3,18 +3,34 @@ const CartModel = require("../dao/db/models/cart.model");
 class CartManager{
     async createCart(){
         try{
-            return returnCreate = await CartModel.create([])
+            const result = await CartModel.create([])
+            if(!result){
+                throw new Error('Error Creating A New Cart')
+            }
         }catch(error){
-            console.log(error);
-            throw error;
+            throw error
+        }
+    }
+
+    async deleteCart(id){
+        try{
+            const returnDelete = await CartModel.findOneAndDelete({_id: id})
+            if(!returnDelete){
+                throw new Error('Cart Not Found')
+            }
+        }catch(error){
+            if(error.message === 'Cart Not Found'){
+                throw error;
+            }
+            throw new Error('Error Deleting Cart');
         }
     }
 
     async updateCart(id, value){
         try{
-            const returnUpdate = await CartModel.findOneAndUpdate({_id: id}, {$set: value})
-            if(returnUpdate){
-                return true;
+            const returnUpdate = await CartModel.findByIdAndUpdate(id, {$set: value})
+            if(!returnUpdate){
+                throw new Error('Error Updating Cart');
             }
         }catch(error){
             console.log(error);
@@ -25,24 +41,14 @@ class CartManager{
     async getCartById(id){
         try{
             const foundCart = await CartModel.findById(id)
-            if(foundCart){
-                return true;
+            if(!foundCart){
+                throw new Error('Cart Not Found');
             }
         }catch(error){
-            console.log(error);
-            throw error;
-        }
-    }
-
-    async deleteCart(id){
-        try{
-            const returnDelete = await CartModel.findOneAndDelete({_id: id})
-            if(returnDelete){
-                return true;
+            if(error.message === 'Cart Not Found'){
+                throw error;
             }
-        }catch(error){
-            console.log(error);
-            throw error;
+            throw new Error('Error Getting Cart');
         }
     }
 
@@ -60,14 +66,15 @@ class CartManager{
                     }
                     foundCart.products.push(newProd)
                 }
-                await Carts.updateOne({"_id": cartId}, foundCart)
-                return {success: true}
+                const result = await Carts.updateOne({"_id": cartId}, foundCart)
+                if(!result){
+                    throw new Error('Error Adding Product To Cart');
+                }
             }else{
-                return {success: false, message: 'Cart not found'};
+                throw new Error('Cart Not Found');
             }
         }catch(error){
-            console.log('Error in CartManager .addProduct', error);
-            throw error
+            throw error;
         }
     }
 
@@ -78,12 +85,15 @@ class CartManager{
                 const existeProd = (foundCart.products).some(prod => toString(prod.product) === toString(productId.trim))
                 if(existeProd){
                     foundCart.products = (foundCart.products).filter(prod => String(prod.product._id) !== String(productId));
-                    await Carts.updateOne({"_id": cartId}, {$set: {products: foundCart.products}});
-                    return true;
+                    const result = await Carts.updateOne({"_id": cartId}, {$set: {products: foundCart.products}});
+                    if(!result){
+                        throw new Error('Error Deleting Product From Cart');
+                    }
                 }
+            }{
+                throw new Error('Cart Not Found');
             }
         }catch(error){
-            console.log(error);
             throw error;
         }
     }
@@ -92,11 +102,14 @@ class CartManager{
         try{
             const foundCart = await Carts.findOne({_id: cartId});
             if(foundCart != null){
-                await Carts.updateOne({"_id": cartId}, {$set: {"products": []}});
-                return true;
+                const result = await Carts.updateOne({"_id": cartId}, {$set: {"products": []}});
+                if(!result){
+                    throw new Error('Error Clearing The Cart');
+                }
+            }else{
+                throw new Error('Cart Not found');
             }
         }catch(error){
-            console.log(error);
             throw error;
         }
     }

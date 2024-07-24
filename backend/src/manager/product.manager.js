@@ -3,10 +3,15 @@ const ProductModel = require('../dao/db/models/product.model');
 class ProductManager{
     async getProducts(){
         try{
-            return await ProductModel.find()
+            const result = await ProductModel.find()
+            if(!result){
+                throw new Error('Products Not Found');
+            }
         }catch(error){
-            console.log('ERROR:', error)
-            throw error;
+            if(error.message === 'Products Not Found'){
+                throw error;
+            }
+            throw new Error('Error Getting Products');
         }
     }
 
@@ -14,12 +19,14 @@ class ProductManager{
         try{
             const result = await ProductModel.findById(id)
             if(!result){
-                throw new Error('Product not found');
+                throw new Error('Product Not Found');
             }
             return result;
         }catch(error){
-            console.log('ERROR:', error)
-            throw error;
+            if(error.message === 'Product Not Found'){
+                throw error;
+            }
+            throw new Error('Error Getting Product');
         }
     }
 
@@ -30,8 +37,10 @@ class ProductManager{
                 throw new Error('Code Must Be Unique');
             }
         }catch(error){
-            console.log('ERROR in ProductManager addProduct:', error)
-            throw error;        
+            if(error.message === 'Code Must Be Unique'){
+                throw error;
+            }
+            throw new Error('Error Creating Product');        
         }
     }
     
@@ -42,8 +51,10 @@ class ProductManager{
                 throw new Error('Product Not Found')
             }
         }catch(error){
-            console.log('ERROR in ProductManager deleteProduct:', error)
-            throw error;
+            if(error.message === 'Product Not Found'){
+                throw error;
+            }
+            throw new Error('Error Deleting Product');
         }
     }
 
@@ -51,11 +62,13 @@ class ProductManager{
         try{
             const result = await ProductModel.findByIdAndUpdate(id, {$set: value})
             if(!result){
-                throw new Error('Product not found');
+                throw new Error('Product Not Found');
             }
         }catch(error){
-            console.log('ERROR:', error)
-            throw error;
+            if(error.message === 'Product Not Found'){
+                throw error;
+            }
+            throw new Error('Error Updating Product');
         }
     }
 }
