@@ -29,16 +29,12 @@ class ProductController{
     async deleteProductById(req, res){
         const { id } = req.params;
         try{
-            const result = await productManager.deleteProduct(id);
-            if(result.success){
-                return res.status(200).json({message: 'Product deleted'});
-            }else{
-                return res.status(404).json({error: result.message});   
-            }
+            await ProductManager.deleteProduct(id)
+            return res.status(200).json({message: 'Product Successfully Deleted'});
         }catch(error){
             console.log('Error ProductController - deleteProductById:', error);
-            if(error.message = 'Product not found'){
-                return res.status(404).json({error: 'Product not found'});
+            if(error.message === 'Product Not Found'){
+                return res.status(404).json({error: error.message});
             }
             return res.status(500).json({error: 'Internal Server Error'});
         }
@@ -47,14 +43,13 @@ class ProductController{
     async addProduct(req, res){
         const { value } = req.body;
         try{
-            const result = await productManager.addProduct(value);
-            if(result.success){
-                return res.status(200).json({message: 'Product successfully added'});
-            }else{
-                return res.status(404).json({error: result.message});
-            }
+            await ProductManager.addProduct(value);
+            return res.status(200).json({message: 'Product Successfully Added'});
         }catch(error){
             console.log('Error ProductController - addProduct:', error);
+            if(error.message === 'Code Must Be Unique'){
+                return res.status(404).json({error: error.message});
+            }
             return res.status(500).json({error: 'Internal Server Error'});
         }
     }

@@ -25,12 +25,9 @@ class ProductManager{
 
     async addProduct(value){
         try{
-            const existe = await ProductModel.find({code: value.code});
-            if(existe){
-                return {success: false, message: 'Code must be unique'}
-            }else{
-                await ProductModel.create(value)
-                return {success: true, message: 'Product added'}
+            const result = await ProductModel.create(value)
+            if(!result){
+                throw new Error('Code Must Be Unique');
             }
         }catch(error){
             console.log('ERROR in ProductManager addProduct:', error)
@@ -40,15 +37,12 @@ class ProductManager{
     
     async deleteProduct(id){
         try{
-            const existe = await ProductModel.findById(id)
-            if(!existe){
-                return {success: false, message:'Product not found'};
-            }else{
-                await ProductModel.findByIdAndDelete(id)
-                return {success: true};
+            const result = await ProductModel.findByIdAndDelete(id);
+            if(!result){
+                throw new Error('Product Not Found')
             }
         }catch(error){
-            console.log('ERROR:', error)
+            console.log('ERROR in ProductManager deleteProduct:', error)
             throw error;
         }
     }
