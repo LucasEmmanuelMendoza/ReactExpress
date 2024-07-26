@@ -41,7 +41,7 @@ class CartController{
     }
 
     async addToCart(req, res){
-        const {pid: prodId, cid: cartId} = req.params;
+        const { cid: cartId, pid: prodId } = req.params;
         try{
             await cartManager.addToCart(prodId, cartId);
             return res.status(200).json({message: 'Product Added To Cart'});
@@ -54,7 +54,7 @@ class CartController{
     }
 
     async deleteProductFromCart(req, res){
-        const { pid: prodId, cid: cartId} = req.params
+        const { cid: cartId, pid: prodId } = req.params;
         try{
             await cartManager.deleteFromCart(prodId, cartId);
             return res.status(200).json({message: 'Product Deleted From Cart Successfully'});
