@@ -26,18 +26,6 @@ class CartManager{
         }
     }
 
-    async updateCart(id, value){
-        try{
-            const returnUpdate = await CartModel.findByIdAndUpdate(id, {$set: value})
-            if(!returnUpdate){
-                throw new Error('Error Updating Cart');
-            }
-        }catch(error){
-            console.log(error);
-            throw error;
-        }
-    }
-
     async getCartById(id){
         try{
             const foundCart = await CartModel.findById(id)
@@ -90,8 +78,10 @@ class CartManager{
                     if(!result){
                         throw new Error('Error Deleting Product From Cart');
                     }
+                }else{
+                    throw new Error('Product Not Found');
                 }
-            }{
+            }else{
                 throw new Error('Cart Not Found');
             }
         }catch(error){
@@ -99,7 +89,20 @@ class CartManager{
         }
     }
 
-    async clearCart(cartId){
+    async updateCart(id, value){
+        try{
+            const returnUpdate = await CartModel.findByIdAndUpdate(id, {$set: value})
+            if(!returnUpdate){
+                throw new Error('Error Updating Cart');
+            }
+            return returnUpdate;
+        }catch(error){
+            console.log(error);
+            throw error;
+        }
+    }
+
+    /*async clearCart(cartId){
         try{
             const foundCart = await Carts.findOne({_id: cartId});
             if(foundCart != null){
@@ -113,7 +116,8 @@ class CartManager{
         }catch(error){
             throw error;
         }
-    }
+    } */
+
 }
 
 module.exports = CartManager

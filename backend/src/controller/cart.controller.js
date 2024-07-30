@@ -41,29 +41,41 @@ class CartController{
     }
 
     async addToCart(req, res){
-        const {pid: prodId, cid: cartId} = req.params;
+        const { cid: cartId, pid: prodId } = req.params;
         try{
-            
+            await cartManager.addToCart(prodId, cartId);
+            return res.status(200).json({message: 'Product Added To Cart'});
         }catch(error){
-
+            if(error.message === 'Cart Not Found' || error.message === 'Error Adding Product To Cart'){
+                return res.status(404).json({error: error.message});
+            }
+            return res.status(500).json({error: 'Internal Server Error'});
         }
     }
 
     async deleteProductFromCart(req, res){
-        const { pid: prodId, cid: cartId} = req.params
+        const { cid: cartId, pid: prodId } = req.params;
         try{
-            
+            await cartManager.deleteFromCart(prodId, cartId);
+            return res.status(200).json({message: 'Product Deleted From Cart Successfully'});
         }catch(error){
-        
+            if(error.message === 'Cart Not Found' || error.message === 'Product Not Found' || error.message === 'Error Deleting Product From Cart'){
+                return res.status(404).json({error: error.message});
+            }
+            return res.status(500).json({error: 'Internal Server Error'});
         }
     }
     
     async clearCart(req, res){
-        const { cid: cartId } = req.params;    
+        const { cid: cartId } = req.params;
         try{
-    
+            await cartManager.updateCart(cartId, {"products": []});
+            return res.status(200).json({message: 'Cart Cleared'});
         }catch(error){
-
+            if(error.message === 'Error Updating Cart'){
+                return res.status(404).json({error: error.message});
+            }
+            return res.status(500).json({error: 'Internal Server Error'});
         }
     }    
 }
