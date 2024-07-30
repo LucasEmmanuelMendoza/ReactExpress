@@ -44,6 +44,7 @@ class CartManager{
             if(!foundCart){
                 throw new Error('Cart Not Found');
             }
+            return foundCart;
         }catch(error){
             if(error.message === 'Cart Not Found'){
                 throw error;
