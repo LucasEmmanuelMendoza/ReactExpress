@@ -9,3 +9,4 @@ routerCart.get('/:cid', async(req, res) => cartController.findCartById(req, res)
 routerCart.post('/:cid/:pid', async(req, res) => cartController.addToCart(req, res));
 routerCart.delete('/:cid/:pid', async(req, res) => cartController.deleteProductFromCart(req, res));
 
+module.exports = routerCart

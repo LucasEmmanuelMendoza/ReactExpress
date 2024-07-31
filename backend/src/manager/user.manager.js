@@ -1,51 +1,73 @@
 const UserModel = require("../dao/db/models/user.model");
 
 class UserManager{
-    async addUser(value){
+    async getUsers(){
         try{
-            const returnCreate = await UserModel.create(value);
-            if(returnCreate){
-                return true;
+            const result = await UserModel.find();
+            if(!result){
+                throw new Error('Users Not Found');
             }
         }catch(error){
-            console.log(error);
-            return error;
+            if(error.message === 'Users Not Found'){
+                throw error;
+            }
+            throw new Error('Error Getting Users');
+        }
+    }
+
+    async addUser(value){
+        try{
+            const result = await UserModel.create(value);
+            if(!result){
+                throw new Error('Code Must Be Unique');
+            }
+        }catch(error){
+            if(error.message === 'Code Must Be Unique'){
+                throw error;
+            }
+            throw new Error('Error Creating User');
         }
     }
 
     async getUserById(id){
         try{
-            const foundUser = await UserModel.findById(id);
-            if(foundUser){
-                return foundUser;
+            const result = await UserModel.findById(id);
+            if(!result){
+                throw new Error('User Not Found');
             }
         }catch(error){
-            console.log(error);
-            return error;
+            if(error.message === 'User Not Found'){
+                throw error;
+            }
+            throw new Error('Error Getting User');
         }
     }
 
     async updateUser(id, value){
         try{
-            const returnUpdate = await UserModel.findByIdAndUpdate(id, {$set: value})
-            if(returnUpdate){
-                return true;
+            const result = await UserModel.findByIdAndUpdate(id, value);
+            if(!result){
+                throw new Error('User Not Found');
             }
         }catch(error){
-            console.log(error);
-            return error;
+            if(error.message === 'User Not Found'){
+                throw error;
+            }
+            throw new Error('Error Updating User');
         }
     }
 
     async deleteUser(id){
         try{
-            const returnDelete = await UserModel.findOneAndDelete({_id: id});
-            if(returnDelete){
-                return true;
+            const result = await UserModel.findOneAndDelete({_id: id});
+            if(!result){
+                throw new Error('User Not Found');
             }
         }catch(error){
-            console.log(error);
-            return error;
+            if(error.message === 'User Not Found'){
+                throw error;
+            }
+            throw new Error('Error Deleting User');
         }
     }
 }
