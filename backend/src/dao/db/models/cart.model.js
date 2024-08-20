@@ -9,9 +9,9 @@ const CartSchema = new mongoose.Schema({
                     required: true
                 },
                 quantity:{
-                    type:Number,
+                    type: Number,
                     required: true,
-                    defaul: 1
+                    default: 1
                 }
             }
         ]

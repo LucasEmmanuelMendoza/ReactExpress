@@ -2,19 +2,19 @@ const mongoose = require('mongoose');
 
 const UserSchema = new mongoose.Schema({
     first_name:{
-        Type: String,
+        type: String,
         required: true
     },
     last_name:{
-        Type:String,
+        type: String,
         required: true
     },
     age:{
-        Type:Number
+        type: Number
     },
     cartId:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref: 'cart',
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'carts',
         required: true
     }
 })
