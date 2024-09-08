@@ -5,6 +5,7 @@ class ProductController{
     getProducts = async(req, res) => {
         try{
             const products = await productManager.getProducts();
+            console.log('prods:', products)
             return res.status(200).json(products);
         }catch(error){
             console.log('Error ProductController - getProducts:', error);
@@ -13,9 +14,8 @@ class ProductController{
     }
 
     getProductById = async(req, res) => {
-        const { pid: id } = req.params;
         try{
-            const product = await productManager.getProduct(id)
+            const product = await productManager.getProduct(req.params.pid)
             return res.status(200).json(product);
         }catch(error){
             console.log('Error ProductController - getProductById:', error);
@@ -27,9 +27,8 @@ class ProductController{
     }
 
     deleteProductById = async(req, res) => {
-        const { pid: id } = req.params;
         try{
-            await productManager.deleteProduct(id)
+            await productManager.deleteProduct(req.params.pid)
             return res.status(200).json({message: 'Product Successfully Deleted'});
         }catch(error){
             console.log('Error ProductController - deleteProductById:', error);
@@ -41,9 +40,8 @@ class ProductController{
     }
 
     addProduct = async(req, res) => {
-        const { value } = req.body;
         try{
-            await productManager.addProduct(value);
+            await productManager.addProduct(req.body);
             return res.status(200).json({message: 'Product Successfully Added'});
         }catch(error){
             console.log('Error ProductController - addProduct:', error);
@@ -55,10 +53,8 @@ class ProductController{
     }
 
     updateProduct = async(req, res)=>{
-        const { id } = req.params
-        const { value } = req.body;
         try{
-            await productManager.updateProduct(id, value)
+            await productManager.updateProduct(req.params.pid, req.body)
             res.status(200).json({message: 'Producto actualizado'});
         }catch(error){
             console.log('Error ProductController - updateProduct:', error);

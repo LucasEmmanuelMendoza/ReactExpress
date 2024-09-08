@@ -7,6 +7,7 @@ class ProductManager{
             if(!result){
                 throw new Error('Products Not Found');
             }
+            return result
         }catch(error){
             if(error.message === 'Products Not Found'){
                 throw error;
@@ -33,12 +34,10 @@ class ProductManager{
     async addProduct(value){
         try{
             const result = await ProductModel.create(value)
-            if(!result){
-                throw new Error('Code Must Be Unique');
-            }
+            return result;
         }catch(error){
-            if(error.message === 'Code Must Be Unique'){
-                throw error;
+            if(error.code === 11000){
+                throw new Error('Code Must Be Unique');
             }
             throw new Error('Error Creating Product');        
         }

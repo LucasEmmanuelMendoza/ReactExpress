@@ -3,7 +3,7 @@ const userManager = new UserManager();
 
 class UserController{
     async getUser(req, res){
-        const { uid: userId } = req.params;
+        const userId = req.params.uid;
         try{
             const result = await userManager.getUserById(userId);
             return res.status(200).json(result)
@@ -28,7 +28,7 @@ class UserController{
     }
 
     async deleteUser(req, res){
-        const { uid: userId } = req.params
+        const userId = req.params.uid;
         try{
             await userManager.deleteUser(userId);
             return res.status(200).json({message: 'User Deleted Succesfully'});
@@ -41,8 +41,8 @@ class UserController{
     }
 
     async updateUser(req, res){
-        const { uid: userId } = req.params;
-        const { value } = req.body;
+        const userId = req.params.uid;
+        const value = req.body;
         try{
             await userManager.updateUser(userId, value);
             return res.status(200).json({message: 'User Updated Succesfully'});
@@ -55,7 +55,7 @@ class UserController{
     }
     
     async addUser(req, res){
-        const { value } = req.body
+        const value = req.body;
         try{
             await userManager.addUser(value);
             return res.status(200).json({message: 'User Added Successfully'});

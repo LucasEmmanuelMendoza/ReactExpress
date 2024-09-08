@@ -15,7 +15,7 @@ class CartController{
     }
 
     async deleteCart(req, res){
-        const { cid: cartId } = req.params;
+        const cartId = req.params.cid;
         try{
             await cartManager.deleteCart(cartId);
             return res.status(200).json({message: 'Cart Deleted Successfully'});
@@ -28,7 +28,7 @@ class CartController{
     }
 
     async findCartById(req, res){
-        const { cid: cartId } = req.params
+        const cartId = req.params.cid;
         try{
             const foundCart = await cartManager.getCartById(cartId);
             return res.status(200).json(foundCart);
@@ -41,7 +41,8 @@ class CartController{
     }
 
     async addToCart(req, res){
-        const { cid: cartId, pid: prodId } = req.params;
+        const cartId = req.params.cid;
+        const prodId = req.params.pid;
         try{
             await cartManager.addToCart(prodId, cartId);
             return res.status(200).json({message: 'Product Added To Cart'});
@@ -54,7 +55,8 @@ class CartController{
     }
 
     async deleteProductFromCart(req, res){
-        const { cid: cartId, pid: prodId } = req.params;
+        const cartId = req.params.cid;
+        const prodId = req.params.pid;
         try{
             await cartManager.deleteFromCart(prodId, cartId);
             return res.status(200).json({message: 'Product Deleted From Cart Successfully'});
@@ -67,7 +69,7 @@ class CartController{
     }
     
     async clearCart(req, res){
-        const { cid: cartId } = req.params;
+        const cartId = req.params.cid;
         try{
             await cartManager.updateCart(cartId, {"products": []});
             return res.status(200).json({message: 'Cart Cleared'});
