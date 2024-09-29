@@ -1,11 +1,26 @@
-const ProductManager = require("../manager/product.manager")
+const ProductManager = require("../manager/product.manager");
+const { generateProduct } = require("../utils/faker/mocks/products.mocks");
 const productManager = new ProductManager()
 
 class ProductController{
+
+    getMockProducts = async(req, res) => {
+        try{
+            const products = [];
+            for(let i=0; i<50; i++){
+                products.push(generateProduct())
+            }
+            return res.status(200).json(products);
+            
+        }catch(error){
+            console.log('Error ProductController - getProducts:', error);
+            return res.status(500).json({error: 'Internal Server Error'});
+        }
+    }
+
     getProducts = async(req, res) => {
         try{
             const products = await productManager.getProducts();
-            console.log('prods:', products)
             return res.status(200).json(products);
         }catch(error){
             console.log('Error ProductController - getProducts:', error);
