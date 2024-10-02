@@ -5,7 +5,6 @@ class ProductController{
     getProducts = async(req, res) => {
         try{
             const products = await productManager.getProducts();
-            console.log('prods:', products)
             return res.status(200).json(products);
         }catch(error){
             console.log('Error ProductController - getProducts:', error);
