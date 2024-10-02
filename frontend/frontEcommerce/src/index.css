@@ -13,6 +13,15 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.cardsContainer {
+  display: flex;
+  justify-content:space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .5rem;
+  width: 100%;
+}
+
 a {
   font-weight: 500;
   color: #646cff;

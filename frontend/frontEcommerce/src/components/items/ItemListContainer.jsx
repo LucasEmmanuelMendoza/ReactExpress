@@ -10,7 +10,7 @@ export const ItemListContainer = () => {
     const { id } = useParams();//id category
 
     useEffect(() =>{
-        fetch('http://localhost:8080/products').then(
+        fetch('http://localhost:8080/products/mockProducts').then(
             response => response.json()
         ).then(
             data => {
