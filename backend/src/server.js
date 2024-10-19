@@ -6,12 +6,23 @@ const app = express();
 const PORT = /* process.env.PORT ||  */8080;
 const Database = require('../src/dao/db/index.js');
 const cors = require('cors');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')
 
 const corsOptions = {
     origin: '*',
     methods: ['GET', 'POST', 'PUT'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }
+
+app.use(session({
+    store:MongoStore.create({
+        mongoUrl: 'mongodb+srv://LucasM:123@expressreact.2ynydqy.mongodb.net/sessions'
+    }),
+    secret: 'sessionSecret',
+    resave: true,
+    saveUninitialized: true
+}))
 
 app.use(cors(corsOptions));
 app.use(express.urlencoded({extended: true}));
