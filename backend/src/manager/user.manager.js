@@ -7,6 +7,7 @@ class UserManager{
             if(!result){
                 throw new Error('Users Not Found');
             }
+            return result;
         }catch(error){
             if(error.message === 'Users Not Found'){
                 throw error;
@@ -29,12 +30,28 @@ class UserManager{
         }
     }
 
+    async getUserByUsername(username){
+        try{
+            const result = await UserModel.find({name: username});
+            if(!result){
+                throw new Error('User Not Found');
+            }
+            return result;
+        }catch(error){
+            if(error.message === 'User Not Found'){
+                throw error;
+            }
+            throw new Error('Error Getting User');
+        }
+    }
+
     async getUserById(id){
         try{
             const result = await UserModel.findById(id);
             if(!result){
                 throw new Error('User Not Found');
             }
+            return result;
         }catch(error){
             if(error.message === 'User Not Found'){
                 throw error;
