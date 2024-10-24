@@ -7,6 +7,9 @@ function App() {
     <BrowserRouter>
         <Routes>
           <Route path='/' element={<ItemListContainer/>}/>
+          <Route path='/login' element={<LoginForm/>} />
+          <Route path='/register' element={<RegisterForm/>}/>
+          <Route path='*' element={<Error/>}/>
         </Routes>
     </BrowserRouter>
   )

@@ -8,6 +8,12 @@ const Database = require('../src/dao/db/index.js');
 const cors = require('cors');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')
+const initializePassport = require('../src/config/passport.js')
+const passport = require('passport');
+
+initializePassport()
+app.use(passport.initialize())
+app.use(passport.session())
 
 const corsOptions = {
     origin: '*',

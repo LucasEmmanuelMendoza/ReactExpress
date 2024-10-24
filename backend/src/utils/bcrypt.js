@@ -4,8 +4,8 @@ const createHash = (password) => {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(10))
 }
 
-const isValidPassword = (user, password) => {
+const isValidPassword = (password, user) => {
     return bcrypt.compareSync(password, user.password)
 }
 
-module.exports = {createHash, isValidPassword}
+module.exports = { createHash, isValidPassword }

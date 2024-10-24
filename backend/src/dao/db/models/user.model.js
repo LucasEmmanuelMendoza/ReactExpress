@@ -17,6 +17,9 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    last_connection:{
+        type: Date
+    },
     age:{
         type: Number
     },
