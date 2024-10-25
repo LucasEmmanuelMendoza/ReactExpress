@@ -18,6 +18,10 @@ routerAuth.get('/failLogin', (req, res) => {
     res.redirect('/errorLogin')
 })
 
+const updateLastConnection = (email) => {
+    console.log(email)
+} 
+
 routerAuth.get('/sucessLogin', async(req, res) => {
     const currentDate = await updateLastConnection(req.session.passport.user.email)
     req.session.passport.user.last_connection = currentDate
