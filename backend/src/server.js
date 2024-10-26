@@ -11,6 +11,16 @@ const MongoStore = require('connect-mongo')
 const initializePassport = require('../src/config/passport.js')
 const passport = require('passport');
 
+//socket
+const { Server } = require('socket.io')
+const http = require('http')
+const funcionSocket = require('../src/dao/db/socket.js')
+
+const server = http.createServer(app);
+const io = new Server(server);
+
+funcionSocket(io);
+
 initializePassport()
 app.use(passport.initialize())
 app.use(passport.session())
@@ -42,3 +52,5 @@ app.listen(PORT, () => {
     console.log('Server run on port', PORT)
     Database.connect()
 })
+
+module.exports = {app, server, io}
