@@ -40,6 +40,7 @@ app.use(session({
     saveUninitialized: true
 }))
 
+app.use(express.static(__dirname+'/public'))
 app.use(cors(corsOptions));
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
