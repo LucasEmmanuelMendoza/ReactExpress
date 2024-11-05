@@ -21,10 +21,6 @@ const io = new Server(server);
 
 funcionSocket(io);
 
-initializePassport()
-app.use(passport.initialize())
-app.use(passport.session())
-
 const corsOptions = {
     origin: '*',
     methods: ['GET', 'POST', 'PUT'],
@@ -39,6 +35,10 @@ app.use(session({
     resave: true,
     saveUninitialized: true
 }))
+
+app.use(passport.initialize())
+app.use(passport.session())
+initializePassport()
 
 app.use(express.static(__dirname+'/public'))
 app.use(cors(corsOptions));
