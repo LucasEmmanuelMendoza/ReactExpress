@@ -101,7 +101,7 @@ class CartManager{
             throw error;
         }
     }
-
+    
     /*async clearCart(cartId){
         try{
             const foundCart = await Carts.findOne({_id: cartId});
