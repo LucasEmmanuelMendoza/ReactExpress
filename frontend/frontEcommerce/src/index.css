@@ -15,7 +15,9 @@
 
 .cardimg{
   height: 10rem;
-  object-fit: cover;
+  object-fit:cover;
+  width: 10rem;
+  height: 10rem;
 }
 
 .card:hover{
