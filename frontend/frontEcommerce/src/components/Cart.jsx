@@ -1,4 +1,5 @@
 import { useLocation, useNavigate } from 'react-router-dom';
+import {useState} from 'react'
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
 import Card from 'react-bootstrap/Card';
@@ -9,11 +10,20 @@ function CartView(){
 }
 
 function FavoritesView(){
+    const [isHovered, setIsHovered] = useState(false);
     return(
         <>
             <div className='cardsContainer'>
-            <Card className='cartCard'>
-                1
+            <Card className='cartCard'
+                onMouseEnter={()=>setIsHovered(true)}
+                onMouseLeave={()=>setIsHovered(false)}>
+
+                {isHovered && (
+                    <Button variant='danger' className='delete-button'>
+                        X
+                    </Button>
+                )}
+
                 <Card.Img className='cardimg' src="https://www.tiendabike.com.ar/Temp/App_WebSite/App_PictureFiles/Items/BINSTRADA1.5D_800.jpg"/>
                 <Card.Body>
                     <div style={{display:'flex', gap:'1rem', flexDirection:'column'}}>
