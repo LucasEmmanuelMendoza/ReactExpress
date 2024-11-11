@@ -1,5 +1,6 @@
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import './App.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { ItemListContainer } from './components/items/ItemListContainer'
 import { Error } from './components/Error'
 import LoginRegister from './components/LoginRegister'

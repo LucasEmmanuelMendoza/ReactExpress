@@ -13,13 +13,28 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.cardimg{
+  height: 10rem;
+  object-fit: cover;
+}
+
+.card:hover{
+  border: grey solid 0.1rem;
+  transform: scale(0.99);
+  .img{
+    filter:grayscale(85%)
+  }
+}
+
 .cardsContainer {
-  display: flex;
-  justify-content:center;
-  align-items:center;
-  flex-wrap: wrap;
-  gap: .5rem;
-  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr)); /* Cada tarjeta ocupa al menos 18rem */
+  gap: 0; /* Elimina el espacio entre las tarjetas */
+  
+/*   display: flex;
+  justify-content:flex-start;
+  align-items:flex-start;
+  flex-wrap: wrap; */
 }
 
 a {
