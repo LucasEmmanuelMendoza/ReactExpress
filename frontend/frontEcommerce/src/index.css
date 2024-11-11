@@ -13,17 +13,25 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.card{
+  border-radius: 0;
+}
+
 .cardimg{
   height: 10rem;
   object-fit: cover;
 }
 
+.cardimg:hover{
+  filter:grayscale(100%);
+}
+
 .card:hover{
-  border: grey solid 0.1rem;
-  transform: scale(0.99);
+  /*border: solid black .1rem;
+   transform: scale(1.01); */
   .img{
     filter:grayscale(85%)
-  }
+  } 
 }
 
 .cardsContainer {
