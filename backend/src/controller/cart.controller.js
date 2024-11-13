@@ -2,9 +2,10 @@ const CartManager = require("../manager/cart.manager")
 const cartManager = new CartManager();
 
 class CartController{
-    async createCart(req, res){
+    createCart = async(req, res)=>{
         try{
-            await cartManager.createCart();
+            const result = await cartManager.createCart();
+            console.log('create Cart:', result);
             return res.status(200).json({message: 'Cart Created Successfully'});
         }catch(error){
             if(error.message === 'Error Creating A New Cart'){
@@ -14,7 +15,7 @@ class CartController{
         }
     }
 
-    async deleteCart(req, res){
+    deleteCart = async(req, res)=>{
         const cartId = req.params.cid;
         try{
             await cartManager.deleteCart(cartId);
@@ -27,7 +28,7 @@ class CartController{
         }
     }
 
-    async findCartById(req, res){
+     findCartById=async(req, res)=>{
         const cartId = req.params.cid;
         try{
             const foundCart = await cartManager.getCartById(cartId);
@@ -40,7 +41,7 @@ class CartController{
         }
     }
 
-    async addToCart(req, res){
+     addToCart=async(req, res)=>{
         const cartId = req.params.cid;
         const prodId = req.params.pid;
         try{
@@ -54,7 +55,7 @@ class CartController{
         }
     }
 
-    async deleteProductFromCart(req, res){
+     deleteProductFromCart=async(req, res)=>{
         const cartId = req.params.cid;
         const prodId = req.params.pid;
         try{
@@ -68,7 +69,7 @@ class CartController{
         }
     }
     
-    async clearCart(req, res){
+     clearCart=async(req, res)=>{
         const cartId = req.params.cid;
         try{
             await cartManager.updateCart(cartId, {"products": []});

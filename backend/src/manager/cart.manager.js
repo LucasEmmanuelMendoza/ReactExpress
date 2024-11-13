@@ -3,10 +3,11 @@ const CartModel = require("../dao/db/models/cart.model");
 class CartManager{
     async createCart(){
         try{
-            const result = await CartModel.create([])
+            const result = await CartModel.create({ products: []})
             if(!result){
                 throw new Error('Error Creating A New Cart')
             }
+            return result;
         }catch(error){
             throw error
         }

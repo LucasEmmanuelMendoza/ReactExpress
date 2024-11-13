@@ -32,10 +32,9 @@ class UserManager{
 
     async getUserByUsername(username){
         try{
-            const result = await UserModel.find({name: username});
-            if(!result){
-                throw new Error('User Not Found');
-            }
+            console.log('username recibido en manager getUserByUsername:', username)
+            const result = await UserModel.findOne({email: username});
+            console.log('result manager:', result)
             return result;
         }catch(error){
             if(error.message === 'User Not Found'){

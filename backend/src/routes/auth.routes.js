@@ -2,7 +2,19 @@ const express = require('express')
 const routerAuth = express.Router()
 const passport = require('passport')
 
-routerAuth.post('/register', passport.authenticate('register', {failureRedirect: '/auth/failRegister', successRedirect: '/auth/successRegister'}))
+routerAuth.post('/register', (req, res, next) => {
+    passport.authenticate('register', (error, user, info) => {
+        if(error){
+            return res.status(500).json({ message: 'Error inesperado'});
+        }
+        if(!user){
+            return res.status(400).json({ message: 'Error tratando de registrar un usuario'});
+        }
+        return res.status(201).json({ message: 'Registro exitoso '});
+    })(req, res, next);
+})
+
+/* routerAuth.post('/register', passport.authenticate('register', {failureRedirect: '/auth/failRegister', successRedirect: '/auth/successRegister'}))
 
 routerAuth.get('/successRegister', (req, res) => {
     res.redirect('/login')
@@ -16,7 +28,7 @@ routerAuth.post('/login', passport.authenticate('login', {failureRedirect: '/aut
 
 routerAuth.get('/failLogin', (req, res) => {
     res.redirect('/errorLogin')
-})
+}) */
 
 const updateLastConnection = async (email) => {
     console.log(email)

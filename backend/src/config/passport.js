@@ -36,46 +36,53 @@ const initializePassport = () => {
         {usernameField: 'email', passReqToCallback: true},
         async(req, username, password, done)=>{
             try{
-                if(await userManager.getUserByUsername(username)){
+                const existeUser = await userManager.getUserByUsername(username);
+                if(await userManager.getUserByUsername(username) !== null){
                     return done('Usuario existente!')
-                }else{
+                }else{ 
                     const userData = req.body
+                    
                     const cart = await cartManager.createCart();
                     const newUser = {
                         email: username,
-                        password: createHash(password),
-                        first_name: userData.first_name,
-                        last_name: userData.last_name,
-                        age: userData.age,
+                        password: 'newContra',
+                        first_name: userData.firstName,
+                        last_name: userData.lastName,
+                        age: Number(userData.age),
                         cartId: cart._id
                     }
 
-                    for(const key of Object.keys(newUser)){
+                    /* for(const key of Object.keys(newUser)){
                         const field = newUser[key];
                         if(typeof(field) === 'string' && field.trim() === '' || field === null){
-                            return done('Error tratando de registrar un usuario')
+                            return done('Ingrese datos sin espacios')
                         }
                     }
                     
                     if(!validateEmail(username)){
-                        return done('Error tratando de registrar un usuario')
-                    }
+                        return done('Email incorrecto')
+                    } */
 
                     let result = await userManager.addUser(newUser);
                     return done(null, result);
                 }
             }catch(err){
-                res.status(500).send('Error inesperado');
+                return done('Error inesperado');
             }
         }
     ))
 
     passport.serializeUser(function(user, done){
-        done(null, user)
+        done(null, user._id)
     })
 
-    passport.deserializeUser(function(user, done){
-        done(null, user)
+    passport.deserializeUser(async (id, done) =>{
+        try{
+            const user = await userManager.getUserById(id);
+            done(null, user);
+        }catch(error){
+            done(error);
+        }
     })
 }
 

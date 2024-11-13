@@ -61,9 +61,9 @@ class UserController{
             return res.status(200).json({message: 'User Added Successfully'});
         }catch(error){
             if(error.message === 'Code Must Be Unique' || error.message === 'Error Creating User'){
-                res.status(404).json({error: error.message});
+                return res.status(404).json({error: error.message});
             }
-            res.status(500).json({error: 'Internal Server Error'});
+            return res.status(500).json({error: 'Internal Server Error'});
         }
     }
 }
