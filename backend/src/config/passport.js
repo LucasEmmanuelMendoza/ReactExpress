@@ -2,8 +2,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const UserManager = require('../manager/user.manager.js');
 const userManager = new UserManager();
-const isValidPassword = require('../utils/bcrypt.js');
-const createHash = require('../utils/bcrypt.js')
+const { isValidPassword, createHash } = require('../utils/bcrypt.js')
 const CartManager = require('../manager/cart.manager.js');
 const cartManager = new CartManager();
 
@@ -36,23 +35,21 @@ const initializePassport = () => {
         {usernameField: 'email', passReqToCallback: true},
         async(req, username, password, done)=>{
             try{
-                const existeUser = await userManager.getUserByUsername(username);
                 if(await userManager.getUserByUsername(username) !== null){
                     return done('Usuario existente!')
                 }else{ 
                     const userData = req.body
-                    
                     const cart = await cartManager.createCart();
                     const newUser = {
                         email: username,
-                        password: 'newContra',
+                        password: createHash(password),
                         first_name: userData.firstName,
                         last_name: userData.lastName,
                         age: Number(userData.age),
                         cartId: cart._id
                     }
 
-                    /* for(const key of Object.keys(newUser)){
+                    for(const key of Object.keys(newUser)){
                         const field = newUser[key];
                         if(typeof(field) === 'string' && field.trim() === '' || field === null){
                             return done('Ingrese datos sin espacios')
@@ -61,7 +58,7 @@ const initializePassport = () => {
                     
                     if(!validateEmail(username)){
                         return done('Email incorrecto')
-                    } */
+                    }
 
                     let result = await userManager.addUser(newUser);
                     return done(null, result);
