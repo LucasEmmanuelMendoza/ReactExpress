@@ -20,10 +20,10 @@ class UserManager{
         try{
             const result = await UserModel.create(value);
             if(!result){
-                throw new Error('Code Must Be Unique');
+                throw new Error('Email already used');
             }
         }catch(error){
-            if(error.message === 'Code Must Be Unique'){
+            if(error.message === 'Email already used'){
                 throw error;
             }
             throw new Error('Error Creating User');

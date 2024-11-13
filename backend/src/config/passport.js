@@ -15,10 +15,9 @@ const initializePassport = () => {
         {usernameField: 'email', passReqToCallback: true},
         async(req, username, password, done) => {
             try{
-                const userData = req.body
                 let user = await userManager.getUserByUsername(username);
                 if(user !== null){
-                    if(isValidPassword(user, userData.password)){
+                    if(isValidPassword(user, password)){
                         user.last_connection = new Date()
                         return done(null, user)
                     }else{
@@ -50,12 +49,14 @@ const initializePassport = () => {
                         age: userData.age,
                         cartId: cart._id
                     }
+
                     for(const key of Object.keys(newUser)){
                         const field = newUser[key];
                         if(typeof(field) === 'string' && field.trim() === '' || field === null){
                             return done('Error tratando de registrar un usuario')
                         }
                     }
+                    
                     if(!validateEmail(username)){
                         return done('Error tratando de registrar un usuario')
                     }

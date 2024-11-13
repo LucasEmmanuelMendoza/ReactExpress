@@ -18,7 +18,7 @@ routerAuth.get('/failLogin', (req, res) => {
     res.redirect('/errorLogin')
 })
 
-const updateLastConnection = (email) => {
+const updateLastConnection = async (email) => {
     console.log(email)
 } 
 
@@ -28,3 +28,5 @@ routerAuth.get('/sucessLogin', async(req, res) => {
 
     //updateUser usando el manager con la última conexión
 })
+
+module.exports = routerAuth;
