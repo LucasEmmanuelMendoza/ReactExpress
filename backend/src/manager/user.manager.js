@@ -22,6 +22,7 @@ class UserManager{
             if(!result){
                 throw new Error('Email already used');
             }
+            return result;
         }catch(error){
             if(error.message === 'Email already used'){
                 throw error;
@@ -32,9 +33,7 @@ class UserManager{
 
     async getUserByUsername(username){
         try{
-            console.log('username recibido en manager getUserByUsername:', username)
             const result = await UserModel.findOne({email: username});
-            console.log('result manager:', result)
             return result;
         }catch(error){
             if(error.message === 'User Not Found'){
@@ -65,6 +64,7 @@ class UserManager{
             if(!result){
                 throw new Error('User Not Found');
             }
+            return result;
         }catch(error){
             if(error.message === 'User Not Found'){
                 throw error;
@@ -79,6 +79,7 @@ class UserManager{
             if(!result){
                 throw new Error('User Not Found');
             }
+            return result;
         }catch(error){
             if(error.message === 'User Not Found'){
                 throw error;

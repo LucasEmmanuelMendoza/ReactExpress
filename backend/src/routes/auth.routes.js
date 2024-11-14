@@ -3,14 +3,28 @@ const routerAuth = express.Router()
 const passport = require('passport')
 
 routerAuth.post('/register', (req, res, next) => {
+    console.log('Request body - DATOS REGISTRO:', req.body);
     passport.authenticate('register', (error, user, info) => {
         if(error){
-            return res.status(500).json({ message: 'Error inesperado'});
+            return res.status(500).json({ message: 'Error inesperado' });
         }
         if(!user){
-            return res.status(400).json({ message: 'Error tratando de registrar un usuario'});
+            return res.status(400).json({ message: 'Error tratando de registrar un usuario' });
         }
-        return res.status(201).json({ message: 'Registro exitoso '});
+        return res.status(201).json({ message: 'Registro exitoso' });
+    })(req, res, next);
+})
+
+routerAuth.post('/login', (req, res, next) => {
+    console.log('Request body - DATOS login en auth:', req.body);
+    passport.authenticate('login', (error, user, info) => {
+        if(error){
+            return res.status(500).json({ message: 'Error inesperado' })
+        }
+        if(!user){
+            return res.status(400).json({ message: 'Error tratando de loguear un usuario '});
+        }
+        return res.status(201).json({ message: 'Inicio de sesión exitoso' })
     })(req, res, next);
 })
 

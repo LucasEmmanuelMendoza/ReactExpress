@@ -4,22 +4,55 @@ import Button from 'react-bootstrap/Button';
 import { useState } from 'react';
 
 function LoginForm(){
-    return(
-      <Form action='/auth/login' method='post' className="loginForm">
-          <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Email address</Form.Label>
-            <Form.Control type="email" placeholder="Enter email" />
-          </Form.Group>
+  const [ loginData, setLoginData ] = useState({
+    email:'', password:''
+  })
 
-          <Form.Group className="mb-3" controlId="formBasicPassword">
-            <Form.Label>Password</Form.Label>
-            <Form.Control type="password" placeholder="Password" />
-          </Form.Group>
-          <Button variant="primary" type="submit">
-            Ingresar
-          </Button>
-      </Form>
-    )
+  const handleChange = (event) => {
+    setLoginData({
+      ...loginData,
+      [event.target.name] : event.target.value
+    })
+  }
+
+  const handleSubmit = async(event) => {
+    event.preventDefault();
+    try{
+      console.log('antes de response')
+      const response = await fetch('http://localhost:8080/auth/login', {
+        method: 'POST',
+        headers:{
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(loginData)
+      });
+      console.log('response login:', response)
+      if(response.ok){
+        window.location.href = '/products';
+      }else{
+        const errorData = await response.json();
+        console.error('Error login: ', errorData.message)
+      }
+    }catch(error){
+      console.log('Error en el servidor', error);
+    }
+  }
+
+  return(
+    <Form onSubmit={handleSubmit} className="loginForm">
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Label>Email address</Form.Label>
+          <Form.Control type="email" name='email' onChange={handleChange} value={loginData.email} placeholder="Enter email" />
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Label>Password</Form.Label>
+          <Form.Control type="password" name='password' onChange={handleChange} value={loginData.password} placeholder="Password" />
+        </Form.Group>
+        <Button variant="primary" type="submit">
+          Ingresar
+        </Button>
+    </Form>)
 }
 
 function RegisterForm(){
@@ -34,11 +67,9 @@ function RegisterForm(){
     })
   }
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async(event) => {
     event.preventDefault();
-    console.log(formData);  // Asegúrate de que los datos sean los esperados
-
-    try {
+    try{
         const response = await fetch('http://localhost:8080/auth/register', {
             method: 'POST',
             headers: {
@@ -46,16 +77,16 @@ function RegisterForm(){
             },
             body: JSON.stringify(formData)
         });
-        if (response.ok) {
+        if(response.ok){
             window.location.href = '/login';  // Redirige al login si el registro es exitoso
-        } else {
+        }else{
             const errorData = await response.json();
-            console.error('Error registro:', errorData.message); // Muestra el mensaje de error
+            console.error('Error registro: ', errorData.message); // Muestra el mensaje de error
         }
-    } catch (error) {
+    }catch(error){
         console.log('Error al conectar con el servidor', error);
     }
-};
+  };
 
   return(
     <Form onSubmit={handleSubmit} className="loginForm">

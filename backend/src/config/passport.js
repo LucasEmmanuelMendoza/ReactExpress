@@ -12,9 +12,9 @@ const initializePassport = () => {
 
     passport.use('login', new LocalStrategy(
         {usernameField: 'email', passReqToCallback: true},
-        async(req, username, password, done) => {
+        async(req, email, password, done) => {
             try{
-                let user = await userManager.getUserByUsername(username);
+                let user = await userManager.getUserByUsername(email);
                 if(user !== null){
                     if(isValidPassword(user, password)){
                         user.last_connection = new Date()
@@ -61,6 +61,7 @@ const initializePassport = () => {
                     }
 
                     let result = await userManager.addUser(newUser);
+                    console.log('result addUser passport:', result)
                     return done(null, result);
                 }
             }catch(err){
@@ -68,6 +69,7 @@ const initializePassport = () => {
             }
         }
     ))
+    
 
     passport.serializeUser(function(user, done){
         done(null, user._id)
