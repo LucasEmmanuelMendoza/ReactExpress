@@ -15,9 +15,12 @@ const initializePassport = () => {
         async(req, email, password, done) => {
             try{
                 let user = await userManager.getUserByUsername(email);
+                console.log('user login passport:', user)
                 if(user !== null){
-                    if(isValidPassword(user, password)){
+                    if(isValidPassword(password, user)){
                         user.last_connection = new Date()
+                        //guardar user con manager
+                        console.log('user las connection:', user)
                         return done(null, user)
                     }else{
                         throw new Error('Invalid Password or User')

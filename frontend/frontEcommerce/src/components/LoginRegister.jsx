@@ -28,7 +28,7 @@ function LoginForm(){
       });
       console.log('response login:', response)
       if(response.ok){
-        window.location.href = '/products';
+        window.location.href = '/';
       }else{
         const errorData = await response.json();
         console.error('Error login: ', errorData.message)
