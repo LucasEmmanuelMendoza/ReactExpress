@@ -1,9 +1,11 @@
-const {faker} = require('@faker-js/faker/locale/es');
-
+const { faker } = require('@faker-js/faker/locale/es');
+//category: faker.commerce.product(),
 const generateProduct = () => {
+    const categories = ['pantalones', 'remeras', 'camperas', 'ropa interior', 'accesorios']
     return {
         title: faker.commerce.productName(),
         description: faker.commerce.productDescription(),
+        category: faker.helpers.arrayElement(categories),
         pictureUrl: faker.image.avatar(),
         price: faker.commerce.price(),
         stock: faker.number.int({min:0, max:30}),
@@ -11,4 +13,4 @@ const generateProduct = () => {
     }
 }
 
-module.exports = {generateProduct};
+module.exports = { generateProduct };

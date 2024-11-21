@@ -3,7 +3,6 @@ const { generateProduct } = require("../utils/faker/mocks/products.mocks");
 const productManager = new ProductManager()
 
 class ProductController{
-
     getMockProducts = async(req, res) => {
         try{
             const products = [];

@@ -6,6 +6,7 @@ export const Item = ({item}) => {
     <Card style={{width: '10rem'}}>
       <Card.Img variant="top" src={item.pictureUrl} style={{width: '10rem', height: '15rem'}} />
       <Card.Body className=''>
+        Category: {item.category}
         <Card.Title>{item.title}</Card.Title>
         <Button variant="primary">Watch More</Button>
         <Button>Add To Cart</Button>

@@ -6,18 +6,19 @@ import { useEffect, useState } from 'react';
 import { ItemList } from './ItemList';
 
 export const ItemListContainer = () => {
-    const [items, setItems] = useState([])
+    const [ items, setItems ] = useState([])
     const { id } = useParams();//id category
 
     useEffect(() =>{
-        fetch('http://localhost:8080/products').then(
+        fetch('http://localhost:8080/products/mockProducts').then(
             response => response.json()
         ).then(
             data => {
-                setItems(data)
-            }
-        )
-    }, [id]);
+                 !id ? setItems(data) :
+                setItems(data.filter((item) => item.category === id))
+                }
+            )
+        }, [id]);
 
     return(
         <div>
