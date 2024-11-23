@@ -5,13 +5,12 @@ import { Error } from './components/Error'
 import LoginRegister from './components/LoginRegister'
 import Cart from './components/Cart'
 import { Navbar } from './components/Navbar';
-import { CartProvider } from './context/CartContext'
 import { Profile } from './components/Profile'
-
+import { Footer } from './components/Footer';
+import { CartProvider } from './context/CartContext';
 
 function App() {
   return (
-    <CartProvider>
       <BrowserRouter>
       <Navbar/>
           <Routes>
@@ -24,8 +23,8 @@ function App() {
             <Route path='/profile' element={<Profile/>}/>
             <Route path='*' element={<Error/>}/>
           </Routes>
+      <Footer/>
       </BrowserRouter>
-    </CartProvider>
     )
 }
 

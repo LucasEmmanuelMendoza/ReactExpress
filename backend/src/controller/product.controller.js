@@ -6,7 +6,7 @@ class ProductController{
     getMockProducts = async(req, res) => {
         try{
             const products = [];
-            for(let i=0; i<50; i++){
+            for(let i=0; i<5; i++){
                 products.push(generateProduct())
             }
             return res.status(200).json(products);
